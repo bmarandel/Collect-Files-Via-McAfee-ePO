@@ -120,7 +120,8 @@ Select the system, click Actions -> Agent -> Single System Troubleshooting, then
 
 ![](./img/ready_for_download.png)
 
-Unzip the archive to retreive targeted files.<br>
+Unzip the archive (i.e: PODCLIENT1_productlogs.zip) to retreive targeted files.
+![](./img/logs_zip.png)
 Enjoy! ;-)
 
 ## Appendix

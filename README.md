@@ -53,6 +53,8 @@ HostInfo hostname and Files full_name, md5 where Files name contains "Sample.exe
 ```
 Select the system where you want to collect the file, copy the file path and click on Actions -> Custom -> _PrepareFileForCollect then paste the file path. Click OK to copy the file for collect. Repeat this action for each file you want to collect.
 
+![](./img/file_search.png)
+
 #### Use case B: Collect a process dump
 Let's say you did a search for a suspicious running process with a **Real-time Search** query like this:
 ```
@@ -63,6 +65,8 @@ Select the system where you want to collect the file, copy the process id and cl
 C:\ProgramData\McAfee\Agent\logs\
 ```
 i.e.: C:\ProgramData\McAfee\Agent\logs\pid2556.dmp. Click OK to dump the process to a file ready for collect.
+
+![](./img/dump_process.png)
 
 #### Note
 If you want to follow the progression of your actions or review the one that have been taken previously, click Menu -> Action History.

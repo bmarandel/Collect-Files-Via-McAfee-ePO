@@ -64,7 +64,7 @@ Select the system where you want to collect the file, copy the process id and cl
 ```
 C:\ProgramData\McAfee\Agent\logs\
 ```
-i.e.: C:\ProgramData\McAfee\Agent\logs\pid2556.dmp. Click OK to dump the process to a file ready for collect.
+i.e.: C:\ProgramData\McAfee\Agent\logs\pid8072.dmp. Click OK to dump the process to a file ready for collect.
 
 ![](./img/dump_process.png)
 

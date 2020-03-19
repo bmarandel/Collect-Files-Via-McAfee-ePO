@@ -12,8 +12,16 @@ You will have to use the **Single System Troubleshooting** feature from ePO, so 
 If you are not familliar with collecting **McAfee Agent** log, please review the **Knowledge Center** article [KB91283](https://kc.mcafee.com/corporate/index?page=content&id=KB91283). Or review the McAfee Agent 5.6 documentation chapter [Viewing McAfee Agent logs](https://docs.mcafee.com/bundle/agent-5.6.x-product-guide/page/GUID-F2605AD0-BCFC-415A-8A56-212526CC4324.html).
 
 ### McAfee Agent Policy
-The **General** settings of your McAfee Agent policy must be modified to permitted the following actions to write files in the McAfee Agent logs folder. To do this, please unselect the setting __Enable self protection (Windows Only)__ from the **General options** section. To re-enforce protection of the McAfee Agent services, process, files and registry we will have to implement a custom set of **Expert Rules** through Endpoint Security Exploit Prevention.
-Please see Appendix A to implement a proposed set of rules.
+The **General** settings of your McAfee Agent policy must be modified to permitted the following actions to write files in the McAfee Agent logs folder. To do this, please unselect the setting __Enable self protection (Windows Only)__ from the **General options** section. To enforce protection of the McAfee Agent files and registry we will have to implement a custom set of **Expert Rules** through Endpoint Security Exploit Prevention. (Please see Appendix A to implement a proposed set of rules.)
+
+**Note:** _You may also want to set a lower value for the ASCI. As we need to revert back the McAfee Agent policy once the file is collected, an ASCI set to 5 or 10 minutes will be perfect._
+
+## Workflow for collecting files
+Here I would like to take time to share a recommanded workflow to proceed with the content shared. If you are interrested in collecting files from endpoints and you have prepared your ePO Client Task / MVISION EDR Reaction and McAfee Agent policy, please use the following workflow as a Best Practice:
+1. Apply the McAfee Agent policy (with self-protection disabled) on your targeted endpoint.
+2. Run the ePO Client Task / MVISION EDR Reaction to prepare the file(s) for collect.
+3. Collect the files via the action Single System Troubleshooting.
+4. Revert back the McAfee Agent policy to your default one.
 
 ## Preparing the file for collect
 
@@ -68,8 +76,7 @@ i.e.: C:\ProgramData\McAfee\Agent\logs\pid8072.dmp. Click OK to dump the process
 
 ![](./img/dump_process.png)
 
-#### Note
-If you want to follow the progression of your actions or review the one that have been taken previously, click Menu -> Action History.
+**Note:** _If you want to follow the progression of your actions or review the one that have been taken previously, click Menu -> Action History._
 
 ### Preparing the file for collect from McAfee ePO
 
@@ -127,7 +134,72 @@ Enjoy! ;-)
 ## Appendix
 
 ### Appendix A - Prevent modification of McAfee Agent
-TBD
+To secure as much as possible the McAfee Agent as long as the Self-Protection is disabled, I want to propose some Expert Rules that you can implement to reduce the risk to see your McAfee Agent installation getting compromised. Please edit your ENS Exploit Prevention policy and add two custom signature with the following content:
+
+#### Prevent modifucation of McAfee Agent - Registry
+Create a **Registry** type rule with the following content.
+```tcl
+Rule {
+    Process {
+        Exclude VTP_PRIVILEGES -type BITMASK { -v !0x8 }
+    }
+    Target {
+		Match KEY {
+            Include OBJECT_NAME {
+				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\masvc\\**"
+				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\macmnsvc\\**"
+				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\McAfeeFramework\\**"
+				-v "HKLM\\SOFTWARE\\Wow6432Node\\McAfee\\Agent\\**"
+				-v "HKLM\\SOFTWARE\\Wow6432Node\\Network Associates\\TVD\Shared Components\\Framework\\**"
+			}
+			Include -access "CREATE WRITE DELETE REPLACE_KEY RESTORE_KEY"
+		}
+		Match VALUE {
+            Include OBJECT_NAME {
+				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\masvc\\**"
+				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\macmnsvc\\**"
+				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\McAfeeFramework\\**"
+				-v "HKLM\\SOFTWARE\\Wow6432Node\\McAfee\\Agent\\**"
+				-v "HKLM\\SOFTWARE\\Wow6432Node\\Network Associates\\TVD\Shared Components\\Framework\\**"
+			}
+			Include -access "CREATE WRITE DELETE REPLACE_KEY RESTORE_KEY"
+		}
+	}
+}
+```
+
+#### Prevent modification of McAfee Agent - Files
+Create a **File** type rule with the following content.
+```tcl
+Rule { 
+	Process {
+        Exclude VTP_PRIVILEGES -type BITMASK { -v !0x8 }
+    }
+    Target {
+		Match FILE {
+			Include OBJECT_NAME {
+                -v "%ProgramFiles%\\McAfee\\Agent\\**"
+				-v "%ProgramData%\\McAfee\\Agent\\**"
+            }
+			Exclude OBJECT_NAME {
+				-v "%ProgramData%\\McAfee\\Agent\\logs\\**"
+			}
+			Include OBJECT_NAME {
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\masvc*.log"
+				-v "%ProgramData%\\McAfee\\Agent\\logs\\macmnsvc*.log"
+				-v "%ProgramData%\\McAfee\\Agent\\logs\\macompatsvc*.log"
+				-v "%ProgramData%\\McAfee\\Agent\\logs\\McScrip*.log"
+				-v "%ProgramData%\\McAfee\\Agent\\logs\\marepomir*.log"
+				-v "%ProgramData%\\McAfee\\Agent\\logs\\UpdaterUI*.log"
+				-v "%ProgramData%\\McAfee\\Agent\\logs\\McTray*.log"
+				-v "%ProgramData%\\McAfee\\Agent\\logs\\mfemact*.log"
+            }
+			Include -access "CREATE WRITE DELETE WRITE_ATTRIBUTE SET_REPARSE"
+		}
+	}
+}
+```
+
 
 ### Appendix B - Cleaning files for collect
 You can clean the files for collect from **MVISION EDR** through a custom reaction or from **McAfee ePO** through a custom package. Feel free to use the most convenient for you.

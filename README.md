@@ -144,27 +144,27 @@ Rule {
         Exclude VTP_PRIVILEGES -type BITMASK { -v !0x8 }
     }
     Target {
-		Match KEY {
+        Match KEY {
             Include OBJECT_NAME {
-				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\masvc\\**"
-				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\macmnsvc\\**"
-				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\McAfeeFramework\\**"
-				-v "HKLM\\SOFTWARE\\Wow6432Node\\McAfee\\Agent\\**"
-				-v "HKLM\\SOFTWARE\\Wow6432Node\\Network Associates\\TVD\Shared Components\\Framework\\**"
-			}
-			Include -access "CREATE WRITE DELETE REPLACE_KEY RESTORE_KEY"
-		}
-		Match VALUE {
+                -v "HKLM\\SYSTEM\\CurrentControlSet\\services\\masvc\\**"
+                -v "HKLM\\SYSTEM\\CurrentControlSet\\services\\macmnsvc\\**"
+                -v "HKLM\\SYSTEM\\CurrentControlSet\\services\\McAfeeFramework\\**"
+                -v "HKLM\\SOFTWARE\\Wow6432Node\\McAfee\\Agent\\**"
+                -v "HKLM\\SOFTWARE\\Wow6432Node\\Network Associates\\TVD\Shared Components\\Framework\\**"
+            }
+            Include -access "CREATE WRITE DELETE REPLACE_KEY RESTORE_KEY"
+        }
+        Match VALUE {
             Include OBJECT_NAME {
-				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\masvc\\**"
-				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\macmnsvc\\**"
-				-v "HKLM\\SYSTEM\\CurrentControlSet\\services\\McAfeeFramework\\**"
-				-v "HKLM\\SOFTWARE\\Wow6432Node\\McAfee\\Agent\\**"
-				-v "HKLM\\SOFTWARE\\Wow6432Node\\Network Associates\\TVD\Shared Components\\Framework\\**"
-			}
-			Include -access "CREATE WRITE DELETE REPLACE_KEY RESTORE_KEY"
-		}
-	}
+                -v "HKLM\\SYSTEM\\CurrentControlSet\\services\\masvc\\**"
+                -v "HKLM\\SYSTEM\\CurrentControlSet\\services\\macmnsvc\\**"
+                -v "HKLM\\SYSTEM\\CurrentControlSet\\services\\McAfeeFramework\\**"
+                -v "HKLM\\SOFTWARE\\Wow6432Node\\McAfee\\Agent\\**"
+                -v "HKLM\\SOFTWARE\\Wow6432Node\\Network Associates\\TVD\Shared Components\\Framework\\**"
+            }
+            Include -access "CREATE WRITE DELETE REPLACE_KEY RESTORE_KEY"
+        }
+    }
 }
 ```
 
@@ -172,31 +172,31 @@ Rule {
 Create a **File** type rule with the following content.
 ```tcl
 Rule { 
-	Process {
+    Process {
         Exclude VTP_PRIVILEGES -type BITMASK { -v !0x8 }
     }
     Target {
-		Match FILE {
-			Include OBJECT_NAME {
+        Match FILE {
+            Include OBJECT_NAME {
                 -v "%ProgramFiles%\\McAfee\\Agent\\**"
-				-v "%ProgramData%\\McAfee\\Agent\\**"
+                -v "%ProgramData%\\McAfee\\Agent\\**"
             }
-			Exclude OBJECT_NAME {
-				-v "%ProgramData%\\McAfee\\Agent\\logs\\**"
-			}
-			Include OBJECT_NAME {
+            Exclude OBJECT_NAME {
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\**"
+            }
+            Include OBJECT_NAME {
                 -v "%ProgramData%\\McAfee\\Agent\\logs\\masvc*.log"
-				-v "%ProgramData%\\McAfee\\Agent\\logs\\macmnsvc*.log"
-				-v "%ProgramData%\\McAfee\\Agent\\logs\\macompatsvc*.log"
-				-v "%ProgramData%\\McAfee\\Agent\\logs\\McScrip*.log"
-				-v "%ProgramData%\\McAfee\\Agent\\logs\\marepomir*.log"
-				-v "%ProgramData%\\McAfee\\Agent\\logs\\UpdaterUI*.log"
-				-v "%ProgramData%\\McAfee\\Agent\\logs\\McTray*.log"
-				-v "%ProgramData%\\McAfee\\Agent\\logs\\mfemact*.log"
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\macmnsvc*.log"
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\macompatsvc*.log"
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\McScrip*.log"
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\marepomir*.log"
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\UpdaterUI*.log"
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\McTray*.log"
+                -v "%ProgramData%\\McAfee\\Agent\\logs\\mfemact*.log"
             }
-			Include -access "CREATE WRITE DELETE WRITE_ATTRIBUTE SET_REPARSE"
-		}
-	}
+            Include -access "CREATE WRITE DELETE WRITE_ATTRIBUTE SET_REPARSE"
+        }
+    }
 }
 ```
 

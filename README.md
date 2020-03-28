@@ -113,12 +113,21 @@ If you are using McAfee ENS ATP in conjunction with **McAfee Threat Intelligence
 
 In that case, edit the Client Task to define the file you want to collect by editing the command line parameter to match your targeted file and run the task on the targeted system.
 
-#### Use case B: ENS Firewall Troubleshooting
-You may need to review the Firewall log file from McAfee Endpoint Security (ENS) deployed on a system for troubleshooting. In that case you can, as described bellow, collect "Firewall_Activity.log" or "Firewall_Debug.log". But to simplify this operation as you may need also some or all others log files from ENS, I crafted a dedicated custom package that prepare for collect all log files from **%DEFLOGDIR%**.
+#### Use case B: ENS Logs Troubleshooting
+You may need to review the Firewall or OnDemandScan log file from McAfee Endpoint Security (ENS) deployed on a system for troubleshooting. In that case you can, as described bellow, collect "Firewall_Activity.log" or "Firewall_Debug.log". But to simplify this operation as you may need also some or all others log files from ENS, I crafted a dedicated custom package that prepare for collect all log files from **%DEFLOGDIR%**.
 
 You need to check in the package "Prepare ENS log files for collect" (COLLECTE1000.zip), create the Deployment Client Task without parameters and run it as needed on the targeted system.
 
 ![](./img/client_task_collecte.png)
+
+#### Use case C: ENS Quarantine Files
+You may need to retreive files from the local quarantine folder for deeper analysis. In that case I specialy crafted a dedicated package that will build a Quarantine Index text file (QuarantineIndex.txt) in addition of preparing files from the quarantine folder for collect. Because quarantine archive are randomly named, the quarantine index will help you to rapidly identify quarantined files and registry keys within the associated archive (i.e.: fefabc6a-f361-4a84-92d5-c336f9823703.zip).
+
+You need to check in the package "Prepare Quarantine files for collect" (COLLECTQ1000.zip), create the Deployment Client Task without parameters and run it as needed on the targeted system.
+
+![](./img/client_task_collectq.png)
+
+**Note:** _By default this package is collecting the quarantine from C:\Quarantine. If you have define another location for the quarantine, you can indicate your custom path as a command line parameter._
 
 ## Collecting the files
 From your ePO Console, click Menu -> System Tree, then use the filter or select the targeted Organisation Unit (OU) within your system tree to identify your targeted system.

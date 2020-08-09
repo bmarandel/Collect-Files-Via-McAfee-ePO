@@ -12,7 +12,7 @@ You will have to use the **Single System Troubleshooting** feature from ePO, so 
 If you are not familliar with collecting **McAfee Agent** log, please review the **Knowledge Center** article [KB91283](https://kc.mcafee.com/corporate/index?page=content&id=KB91283). Or review the McAfee Agent 5.6 documentation chapter [Viewing McAfee Agent logs](https://docs.mcafee.com/bundle/agent-5.6.x-product-guide/page/GUID-F2605AD0-BCFC-415A-8A56-212526CC4324.html).
 
 ### McAfee Agent Policy
-The **General** settings of your McAfee Agent policy must be modified to permitted the following actions to write files in the McAfee Agent logs folder. To do this, please unselect the setting __Enable self protection (Windows Only)__ from the **General options** section. To enforce protection of the McAfee Agent files and registry we will have to implement a custom set of **Expert Rules** through Endpoint Security Exploit Prevention. (Please see Appendix A to implement a proposed set of rules.)
+The **General** settings of your McAfee Agent policy must be modified to permitted the following actions to write files in the McAfee Agent logs folder. To do this, please unselect the setting __Enable self protection (Windows Only)__ from the **General options** section. To enforce protection of the McAfee Agent files and registry you will have to implement a custom set of **Expert Rules** through Endpoint Security Exploit Prevention. (Please see Appendix A to implement a proposed set of rules.)
 
 **Note:** _You may also want to set a lower value for the ASCI. As we need to revert back the McAfee Agent policy once the file is collected, an ASCI set to 5 or 10 minutes will be perfect._
 
@@ -20,12 +20,14 @@ The **General** settings of your McAfee Agent policy must be modified to permitt
 Here I would like to take time to share a recommanded workflow to proceed with the content shared. If you are interrested in collecting files from endpoints and you have prepared your ePO Client Task / MVISION EDR Reaction and McAfee Agent policy, please use the following workflow as a Best Practice:
 1. Apply the McAfee Agent policy (with self-protection disabled) on your targeted endpoint.
 2. Run the ePO Client Task / MVISION EDR Reaction to prepare the file(s) for collect.
-3. Collect the files via the action Single System Troubleshooting.
-4. Revert back the McAfee Agent policy to your default one.
+3. Revert back the McAfee Agent policy to your default one.
+4. Collect the files via the action Single System Troubleshooting.
 
 ## Preparing the file for collect
 
 You can prepare the file for collect from **MVISION EDR** through a custom reaction or from **McAfee ePO** through a custom package. Feel free to use the most convenient for you.
+
+**Note:** _All the following actions will work event if the endpoint has been quarantined._
 
 ### Preparing the file for collect from MVISION EDR
 

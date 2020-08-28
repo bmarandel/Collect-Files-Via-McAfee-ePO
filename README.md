@@ -147,7 +147,7 @@ Enjoy! ;-)
 ### Appendix A - Prevent modification of McAfee Agent
 To secure as much as possible the McAfee Agent as long as the Self-Protection is disabled, I want to propose some Expert Rules that you can implement to reduce the risk to see your McAfee Agent installation getting compromised. Please edit your ENS Exploit Prevention policy and add two custom signature with the following content:
 
-#### Prevent modifucation of McAfee Agent - Registry
+#### Prevent modification of McAfee Agent - Registry
 Create a **Registry** type rule with the following content.
 ```tcl
 Rule {
